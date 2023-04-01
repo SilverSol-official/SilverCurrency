@@ -8,7 +8,7 @@ export const fetchCurrencyList = createAsyncThunk(
   async (searchField: Array<string> = ["", ""], { rejectWithValue }) => {
     const base: string = searchField[0];
     const currency: string = searchField[1];
-    const url: string = `https://api.currencyapi.com/v3/latest?apikey=k1XK1HL4D2zPU4jXPP7BSsaHdyQK9VY23cvPoOeL&currencies=${currency}&base_currency=${base}`;
+    const url: string = `https://api.currencyapi.com/v3/latest?apikey=DXUG0gLBMmNojToLZFtxv4AZsHecl0A7nwJORudX&currencies=${currency}&base_currency=${base}`;
     const responce = await fetch(url);
     if (!responce.ok) {
       throw new Error("error");

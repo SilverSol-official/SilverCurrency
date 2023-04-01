@@ -8,6 +8,9 @@ import {  AppDispatch, RootState } from '../rdx/Store';
 
 
 interface InputPosition {position:'left' | 'right'}; 
+type status = "loading" | "resolved" | "rejected";
+type error = object | null | unknown;
+
 
 const InputForm:FC<InputPosition> = ({position}) => {
     const pos:number = position==='left'?0:1; 
@@ -17,6 +20,9 @@ const InputForm:FC<InputPosition> = ({position}) => {
     const currChar:string = useSelector((state:RootState)=>state.currency.currChar[pos]);
   
     const dispatch:AppDispatch = useDispatch();
+
+    const { status:status, error:error } = useSelector((state:RootState) => state.currency);
+
     const [amount,setAmount] = useState<number | undefined>(stateValues);
  
 
@@ -35,7 +41,16 @@ const InputForm:FC<InputPosition> = ({position}) => {
         dispatch(enterAndCalc({pos:0,val:In})); 
         break;
     }
-        
+  }
+
+  const checkoutConnection:Function = () => {
+    if (status === "loading" && error === null) {
+      return ('Loading...');
+    } else if (error != null) {
+      return ('An error occured');
+    } else {
+      return(amount);
+    };
   }
 
     return(
@@ -46,8 +61,8 @@ const InputForm:FC<InputPosition> = ({position}) => {
             startAdornment={<InputAdornment position="start">{currChar[0]}</InputAdornment>}
             label="Amount"
             onChange={ChangeHandle} 
-            value={amount}
-            type='number'
+            value={checkoutConnection()}
+            type='text'
             placeholder='Enter amount'
           />          
         </FormControl>
