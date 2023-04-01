@@ -1,6 +1,6 @@
 import { FormControl, InputAdornment, InputLabel, OutlinedInput } from '@mui/material';
 import * as react from 'react';
-import {FC, useState, ChangeEvent} from 'react';
+import {FC, useState, ChangeEvent, useEffect} from 'react';
 import {  useSelector } from 'react-redux';
 
 import {  RootState } from '../rdx/Store';
@@ -12,21 +12,28 @@ const MainBody:FC = () => {
 
 
   const stateCource:number = useSelector((state:RootState)=>state.currency.courses);
-  const [amountl,setAmountl] = useState<number>();
-  const [amountr,setAmountr] = useState<number>();
+  const [amountl,setAmountl] = useState<number>(0);
+  const [amountr,setAmountr] = useState<number>(0);
+
+  useEffect(() => {
+      setAmountr( amountr );
+      setAmountl( amountr/stateCource);
+      console.log('amountl',amountl);
+      console.log('amountr',amountr);
+    }, [stateCource]); 
 
   const RightChangeHandle = (event:ChangeEvent<HTMLInputElement>): void=>{
-        const leftIn:number = +event.target.value;
-        setAmountr( leftIn );
-        setAmountl( leftIn/stateCource);
+        const rightIn:number = +event.target.value;
+        setAmountr( rightIn );
+        setAmountl( rightIn/stateCource);
         console.log('amountl',amountl);
         console.log('amountr',amountr);
   }
 
   const leftChangeHandle = (event:ChangeEvent<HTMLInputElement>): void=>{
-        const rightIn:number = +event.target.value
-        setAmountl(rightIn);
-        setAmountr(rightIn*stateCource);
+        const leftIn:number = +event.target.value
+        setAmountl(leftIn);
+        setAmountr(leftIn*stateCource);
         console.log('amountl',amountl);
         console.log('amountr',amountr);
   }

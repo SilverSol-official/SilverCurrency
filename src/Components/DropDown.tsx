@@ -1,20 +1,29 @@
 import * as React from 'react';
-import { FC } from 'react';
+import { FC,useState } from 'react';
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { AppDispatch } from '../rdx/Store';
+import { useDispatch } from 'react-redux';
+import { setLeft, setRight } from '../rdx/Features/currency';
 
 interface DropPosition {position:'left' | 'right'}; 
 
 const DropDownMenu:FC<DropPosition> = ({position}) => {
+  const dispatch:AppDispatch = useDispatch();
 
-    console.log(position);
-  const [currency, setCurrency] = React.useState('');
+  const [currency, setCurrency] = useState<string>();
 
   const handleChange = (event: SelectChangeEvent) => {
-    setCurrency(event.target.value as string);
+    const cur:string = event.target.value;
+    if (position==='left'){
+      dispatch(setLeft({currency:cur}));
+    } else if (position==='right'){
+      dispatch(setRight({currency:cur}));
+    }
+    setCurrency(cur);
   };
 
   return (
@@ -28,19 +37,19 @@ const DropDownMenu:FC<DropPosition> = ({position}) => {
           label="Age"
           onChange={handleChange}
         >
-          <MenuItem value={10}>
+          <MenuItem value={'USD'}>
             <img
             src="https://flagcdn.com/w20/us.png"
             width="20"
             alt="South Africa"
             /> USD</MenuItem>
-          <MenuItem value={20}>
+          <MenuItem value={'EU'}>
           <img
             src="https://flagcdn.com/w20/eu.png"
             width="20"
             alt="South Africa"
             /> EU</MenuItem>
-          <MenuItem value={30}>
+          <MenuItem value={'UAH'}>
           <img
             src="https://flagcdn.com/w20/ua.png"
             width="20"
