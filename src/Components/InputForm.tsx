@@ -53,6 +53,16 @@ const InputForm:FC<InputPosition> = ({position}) => {
     };
   }
 
+  const checkoutError:Function = () => {
+    if (status === "loading" && error === null) {
+      return ('text');
+    } else if (error != null) {
+      return ('text');
+    } else {
+      return('number');
+    };
+  }
+
     return(
         <FormControl fullWidth sx={{ mt: 1 }}>
           <InputLabel htmlFor="outlined-adornment-amount" >Amount</InputLabel>
@@ -62,7 +72,7 @@ const InputForm:FC<InputPosition> = ({position}) => {
             label="Amount"
             onChange={ChangeHandle} 
             value={checkoutConnection()}
-            type='text'
+            type={checkoutError()}
             placeholder='Enter amount'
           />          
         </FormControl>
