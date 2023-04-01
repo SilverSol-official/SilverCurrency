@@ -6,11 +6,11 @@ const Header:FC = () => {
         <div className='header'>
             <div className="wrapper">
                 <img src="https://flagcdn.com/w80/us.png" alt='usa flag'/>
-                <h2>32/44</h2>
+                <p>32/44</p>
             </div>  
             <div className="wrapper">
                 <img src="https://flagcdn.com/w80/eu.png" alt='eu flag'/>   
-                <h2>32/44</h2>
+                <p>32/44</p>
             </div> 
 
         </div>

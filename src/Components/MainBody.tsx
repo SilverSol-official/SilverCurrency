@@ -6,24 +6,26 @@ import DropDownMenu from './DropDown';
 import InputForm from './InputForm';
 
 
-
 const MainBody:FC = () => {
 
 
-    return(
-      <div className="container">
-       <div className="mainBody row">
-            <div className="bodyWrapper col-sm-12 col-6">
-                <DropDownMenu position='left'/> 
-                <InputForm position='left'/>
-              
+    return(<div className="mainBody container">
+   
+            
+            <div className="bodyWrapper row">
+
+                <div className=' col-sm-6 mt-1'>
+                    <DropDownMenu position='left'/> 
+                    <InputForm position='left'/>
             </div>
-            <div className="bodyWrapper col-sm-12 col-6">
-                <DropDownMenu position='right'/>
-                <InputForm position='right'/>
-               
-            </div>    
-        </div>  
+            <div className=' col-sm-6 mt-1'>
+                        <DropDownMenu position='right'/>
+                        <InputForm position='right'/>
+            </div> 
+            </div>  
+    
+       
+
       </div>
        
     )

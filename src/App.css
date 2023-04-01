@@ -24,8 +24,11 @@
   padding: 10px;
 }
 
-.wrapper>h2 {
+.wrapper>p {
   margin-left: 10px;
+  margin-top: 15px;
+  font-size: xx-large;
+  font-weight: bold;
 }
 
 .mainBody {
@@ -39,6 +42,23 @@
 }
 
 .bodyWrapper {
-  width: 40%;
+  width: 100%;
 
+}
+
+@media screen and (max-width: 900px) {
+  .App {
+    width: 90%;
+  }
+
+  .wrapper>p {
+    margin-left: 10px;
+    margin-top: 15px;
+    font-size: large;
+    font-weight: bold;
+  }
+
+  .wrapper>img {
+    width: 50px;
+  }
 }
