@@ -8,7 +8,8 @@ export const fetchCurrencyList = createAsyncThunk(
   async (searchField: Array<string> = ["", ""], { rejectWithValue }) => {
     const base: string = searchField[0];
     const currency: string = searchField[1];
-    const url: string = `https://api.currencyapi.com/v3/latest?apikey=DXUG0gLBMmNojToLZFtxv4AZsHecl0A7nwJORudX&currencies=${currency}&base_currency=${base}`;
+    const apiKey: string = "DXUG0gLBMmNojToLZFtxv4AZsHecl0A7nwJORudX";
+    const url: string = `https://api.currencyapi.com/v3/latest?apikey=${apiKey}&currencies=${currency}&base_currency=${base}`;
     const responce = await fetch(url);
     if (!responce.ok) {
       throw new Error("error");
@@ -35,20 +36,6 @@ export const currencySlice = createSlice({
   name: "currency",
   initialState,
   reducers: {
-    // setLeft: (state, action) => {
-    //   state.currencies[0] = action.payload.currency;
-    //   console.log("value written:", state.currencies[0]);
-    //   if (state.currencies[1] !== "") {
-    //     fetchCurrencyList(state.currencies);
-    //   }
-    // },
-    // setRight: (state, action) => {
-    //   state.currencies[1] = action.payload.currency;
-    //   console.log("value written:", state.currencies[1]);
-    //   if (state.currencies[0] !== "") {
-    //     fetchCurrencyList(state.currencies);
-    //   }
-    // },
     enterAndCalc: (state, action) => {
       switch (action.payload.pos) {
         case 0:
