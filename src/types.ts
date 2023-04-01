@@ -5,6 +5,7 @@ export interface initialStateType {
   cours: number | "";
   values: Array<number>;
   currChar: string[];
+  dir: "l" | "r";
 }
 
 export interface metaType {

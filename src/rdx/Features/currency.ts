@@ -28,6 +28,7 @@ const initialState: initialStateType = {
   currChar: ["₴", "₴"],
   cours: "",
   values: [0, 0],
+  dir: "l",
 };
 
 export const currencySlice = createSlice({
@@ -69,11 +70,13 @@ export const currencySlice = createSlice({
         case 0:
           state.currencies[0] = action.payload.val;
           state.currChar[0] = action.payload.char;
+          state.dir = "l";
           //l
           break;
         case 1:
           state.currencies[1] = action.payload.val;
           state.currChar[1] = action.payload.char;
+          state.dir = "r";
           //r
           break;
       }
@@ -92,7 +95,15 @@ export const currencySlice = createSlice({
         resData.data.EUR?.value ||
         resData.data.UAH?.value ||
         resData.data.USD?.value;
-      state.values = [0, 0];
+      switch (state.dir) {
+        case "l":
+          state.values[1] = +(state.values[0] * state.cours).toFixed(2);
+          break;
+        case "r":
+          state.values[0] = +(state.values[1] / state.cours).toFixed(2);
+          break;
+      }
+      //state.values = [0, 0];
     });
     builder.addCase(fetchCurrencyList.rejected, (state, action) => {
       state.status = "rejected";

@@ -7,7 +7,7 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { AppDispatch, RootState } from '../rdx/Store';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchCurrencyList, setCurrencies } from '../rdx/Features/currency';
+import { enterAndCalc, fetchCurrencyList, setCurrencies } from '../rdx/Features/currency';
 // import { setLeft, setRight } from '../rdx/Features/currency';
 
 interface DropPosition {position:'left' | 'right'}; 
@@ -16,12 +16,13 @@ interface DropPosition {position:'left' | 'right'};
 const DropDownMenu:FC<DropPosition> = ({position}) => {
 
   const stateCurrencies:string[]|undefined[] = useSelector((state:RootState)=>state.currency.currencies);
+  const values:number[] = useSelector((state:RootState)=>state.currency.values);
   const dispatch:AppDispatch =useDispatch();
   const [currency, setCurrency] = useState<string>('UAH');
 
   useEffect(()=>{
     if ((stateCurrencies[0]!=='')&&(stateCurrencies[1]!=='')){
-      dispatch(fetchCurrencyList(stateCurrencies));
+      dispatch(fetchCurrencyList([...stateCurrencies]));
     }
   },[stateCurrencies,dispatch])
 
@@ -43,10 +44,12 @@ const DropDownMenu:FC<DropPosition> = ({position}) => {
     const cur:string = event.target.value;
     switch (position){
       case 'left':
-        dispatch(setCurrencies({pos:0,val:cur,char:charGen(cur)}));
+          dispatch(setCurrencies({pos:0,val:cur,char:charGen(cur)}));
+          dispatch(enterAndCalc({pos:0,val:values[0]}));
         break;
         case 'right':
           dispatch(setCurrencies({pos:1,val:cur,char:charGen(cur)}));
+          dispatch(enterAndCalc({pos:1,val:values[1]}));
         break;
     }
     setCurrency(cur);
