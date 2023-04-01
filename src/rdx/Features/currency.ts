@@ -8,9 +8,7 @@ export const fetchCurrencyList = createAsyncThunk(
   async (searchField: Array<string> = ["", ""], { rejectWithValue }) => {
     const base: string = searchField[0];
     const currency: string = searchField[1];
-
-    const url: string = `https://api.currencyapi.com/v3/latest?apikey=mcavHYBcgdc21nIrFLs2aFnCiaeX6sjS5TuvVupO&currencies=${currency}&base_currency=${base}`;
-    console.log("getting currency list");
+    const url: string = `https://api.currencyapi.com/v3/latest?apikey=k1XK1HL4D2zPU4jXPP7BSsaHdyQK9VY23cvPoOeL&currencies=${currency}&base_currency=${base}`;
     const responce = await fetch(url);
     if (!responce.ok) {
       throw new Error("error");
@@ -19,7 +17,6 @@ export const fetchCurrencyList = createAsyncThunk(
     if (responce.status < 200 || responce.status >= 300) {
       return rejectWithValue(data);
     }
-    console.log("data:", data);
     return data;
   }
 );
@@ -90,7 +87,6 @@ export const currencySlice = createSlice({
     });
     builder.addCase(fetchCurrencyList.fulfilled, (state, action) => {
       state.status = "resolved";
-      console.log("action", action.payload);
       const resData: CurrencyData = action.payload;
       state.cours =
         resData.data.EUR?.value ||

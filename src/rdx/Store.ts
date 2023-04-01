@@ -1,8 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import currencyReducer from "./Features/currency";
+import headerReducer from "./Features/header";
+
 export const store = configureStore({
   reducer: {
     currency: currencyReducer,
+    header: headerReducer,
   },
 });
 

@@ -20,3 +20,5 @@ export interface CurrencyData {
   meta: metaType;
   data: dataType;
 }
+
+export type Header = number[];
