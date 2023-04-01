@@ -1,12 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { initialStateType } from "../../types";
+
+import { CurrencyData, initialStateType } from "../../types";
 
 export const fetchCurrencyList = createAsyncThunk(
   "currency/fetchCurrencyList",
-  async (searchField: string = "", { rejectWithValue }) => {
-    const url: string =
-      "https://api.currencyapi.com/v3/currencies?apikey=mcavHYBcgdc21nIrFLs2aFnCiaeX6sjS5TuvVupO&currencies=";
+  async (searchField: Array<string> = ["", ""], { rejectWithValue }) => {
+    const base: string = searchField[0];
+    const currency: string = searchField[1];
+
+    const url: string = `https://api.currencyapi.com/v3/latest?apikey=mcavHYBcgdc21nIrFLs2aFnCiaeX6sjS5TuvVupO&currencies=${currency}&base_currency=${base}`;
     console.log("getting currency list");
     const responce = await fetch(url);
     if (!responce.ok) {
@@ -24,9 +27,9 @@ export const fetchCurrencyList = createAsyncThunk(
 const initialState: initialStateType = {
   status: "loading",
   error: null,
-  data: {},
-  currencies: [],
-  courses: 2,
+  currencies: ["UAH", "UAH"],
+  currChar: ["₴", "₴"],
+  cours: "",
   values: [0, 0],
 };
 
@@ -34,19 +37,49 @@ export const currencySlice = createSlice({
   name: "currency",
   initialState,
   reducers: {
-    setLeft: (state, action) => {
-      state.values[0] = +action.payload.value;
-      console.log("value written:", state.values[0]);
-      console.log("value converting");
-      state.values[1] = +state.values[0] * +state.courses;
-      console.log("value written:", state.values[1]);
+    // setLeft: (state, action) => {
+    //   state.currencies[0] = action.payload.currency;
+    //   console.log("value written:", state.currencies[0]);
+    //   if (state.currencies[1] !== "") {
+    //     fetchCurrencyList(state.currencies);
+    //   }
+    // },
+    // setRight: (state, action) => {
+    //   state.currencies[1] = action.payload.currency;
+    //   console.log("value written:", state.currencies[1]);
+    //   if (state.currencies[0] !== "") {
+    //     fetchCurrencyList(state.currencies);
+    //   }
+    // },
+    enterAndCalc: (state, action) => {
+      switch (action.payload.pos) {
+        case 0:
+          state.values[0] = action.payload.val;
+          if (typeof state.cours === "number")
+            state.values[1] = +(action.payload.val * state.cours).toFixed(2);
+          //l
+          break;
+        case 1:
+          state.values[1] = action.payload.val;
+          if (typeof state.cours === "number")
+            state.values[0] = +(action.payload.val / state.cours).toFixed(2);
+          //r
+          break;
+      }
     },
-    setRight: (state, action) => {
-      state.values[1] = +action.payload.value;
-      console.log("value written:", state.values[1]);
-      console.log("value converting");
-      state.values[0] = +state.values[1] * +state.courses;
-      console.log("value written:", state.values[0]);
+    setCurrencies: (state, action) => {
+      switch (action.payload.pos) {
+        case 0:
+          state.currencies[0] = action.payload.val;
+          state.currChar[0] = action.payload.char;
+          //l
+          break;
+        case 1:
+          state.currencies[1] = action.payload.val;
+          state.currChar[1] = action.payload.char;
+          //r
+          break;
+      }
     },
   },
   extraReducers: (builder) => {
@@ -58,8 +91,12 @@ export const currencySlice = createSlice({
     builder.addCase(fetchCurrencyList.fulfilled, (state, action) => {
       state.status = "resolved";
       console.log("action", action.payload);
-      state.data = action.payload;
-      console.log("state w info", state.data);
+      const resData: CurrencyData = action.payload;
+      state.cours =
+        resData.data.EUR?.value ||
+        resData.data.UAH?.value ||
+        resData.data.USD?.value;
+      state.values = [0, 0];
     });
     builder.addCase(fetchCurrencyList.rejected, (state, action) => {
       state.status = "rejected";
@@ -68,6 +105,6 @@ export const currencySlice = createSlice({
   },
 });
 
-export const { setLeft, setRight } = currencySlice.actions;
+export const { enterAndCalc, setCurrencies } = currencySlice.actions;
 
 export default currencySlice.reducer;
