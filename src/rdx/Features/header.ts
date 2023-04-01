@@ -7,7 +7,7 @@ export const fetchDollar = createAsyncThunk(
   async (n: boolean, { rejectWithValue }) => {
     const base: string = "USD";
     const currency: string = "UAH";
-    const apiKey: string = "DXUG0gLBMmNojToLZFtxv4AZsHecl0A7nwJORudX";
+    const apiKey: string = "8nZ95UCroKY28pDiefYDt29Opzq6rd1uxOjp7pmw";
     const url: string = `https://api.currencyapi.com/v3/latest?apikey=${apiKey}&currencies=${currency}&base_currency=${base}`;
     const responce = await fetch(url);
     if (!responce.ok) {
@@ -26,7 +26,7 @@ export const fetchEuro = createAsyncThunk(
   async (n: boolean, { rejectWithValue }) => {
     const base: string = "EUR";
     const currency: string = "UAH";
-    const apiKey: string = "DXUG0gLBMmNojToLZFtxv4AZsHecl0A7nwJORudX";
+    const apiKey: string = "8nZ95UCroKY28pDiefYDt29Opzq6rd1uxOjp7pmw";
     const url: string = `https://api.currencyapi.com/v3/latest?apikey=${apiKey}&currencies=${currency}&base_currency=${base}`;
     const responce = await fetch(url);
     if (!responce.ok) {
